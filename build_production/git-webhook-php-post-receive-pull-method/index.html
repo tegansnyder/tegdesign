@@ -1,0 +1,361 @@
+<!--
+Git WebHook PHP Post Receive Pull Method
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>Git WebHook PHP Post Receive Pull Method</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>Git WebHook PHP Post Receive Pull Method</h1>
+			    <p class="sub_txt">Posted on June 27, 2012 at 10:01 pm</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>I hope this finds someone well. I spent a few hours trying to iron out the process of deploying to git from my laptop and then automatically initiating a pull request on my server using Github&#8217;s Web Hooks.</p>
+<p>There is an article called <a href="http://net.tutsplus.com/tutorials/other/the-perfect-workflow-with-git-github-and-ssh/">&#8220;The Perfect Workflow&#8221;</a> on NetTuts that describes the method to create a connection between your GitHub repo and the directory stored on your server using Github Web Hooks and PHP. For example, if you update source files on your local machine, and then push the changes to Github it will automatically run a &#8220;git pull&#8221; on your server.<br />
+<span id="more-267"></span><br />
+Here is the steps I took.</p>
+<h2>Step 1 &#8211; Create git-puller.sh file in your existing Github repo.</h2>
+
+
+<pre><code>cd /srv/www/www.domain.com/public_html &amp;&amp; /usr/lib/git-core/git pull &amp;&amp; cd -</code></pre>
+
+
+<p><strong>Things to note:</strong></p>
+<ul>
+<li>You must use full paths to your working directory.</li>
+<li>The must use the full path to git. It can be found using &#8220;git &#8211;exec-path&#8221;.</li>
+</ul>
+<h2>Step 2 &#8211; Create a git-hook.php file in your existing Github repo.</h2>
+
+
+<pre><code class="php">
+&lt;?php #!/usr/bin/env /usr/bin/php
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+set_time_limit(0);
+
+try {
+
+  $payload = json_decode($_REQUEST['payload']);
+
+}
+catch(Exception $e) {
+
+	//log the error
+	file_put_contents('/srv/www/www.domain.com/logs/github.txt', $e . ' ' . $payload, FILE_APPEND);
+
+	  exit(0);
+}
+
+if ($payload-&gt;ref === 'refs/heads/master') {
+
+	$project_directory = '/srv/www/www.domain.com/public_html/';
+
+	$output = shell_exec(&quot;/srv/www/www.domain.com/public_html/git-puller.sh&quot;);
+
+	//log the request
+	file_put_contents('/srv/www/www.domain.com/logs/github.txt', $output, FILE_APPEND);
+
+}
+?&gt;
+</code></pre>
+
+
+<p><strong>Things to note:</strong></p>
+<ul>
+<li>The path to PHP is set at the top of the file may be different on your system. or php -i can help you find it.</li>
+<li>As you see I&#8217;m logging all output to log/github.txt this file must be writable by the web user. (CHMOD 777)</li>
+</ul>
+<h2>Step 3 &#8211; Push your Repo and set Webhook</h2>
+<ul>
+<li>The next step is to commit your files to your github repo.</li>
+<li>Then visit Github and setup your Webook to point to the URL of your PHP file.</li>
+</ul>
+<p><a href="/img/Screen-Shot-2012-06-27-at-4.45.02-PM.png"><img class="alignnone size-full wp-image-270" title="Github Webhook" src="/img/Screen-Shot-2012-06-27-at-4.45.02-PM.png" alt="Github Webhook" width="935" height="430" /></a></p>
+<ul>
+<li>Next SSH into your web server and visit the directory where you want your files be cloned.</li>
+<li>If it is a blank directory (works best) run:
+
+
+<pre><code>git clone https://github.com/username/myrepo.git ./</code></pre>
+
+
+</li>
+<li>Make sure your files are all owned by the web user of Apache or Nginx (mine is www-data)
+
+
+<pre><code>chown www-data:www-data *</code></pre>
+
+
+</li>
+</ul>
+<h2>Step 4 &#8211; Setup sudo file and test</h2>
+<ul>
+<li>In order to allow the &#8220;git-puller.sh&#8221; script to run as superuser you need to add it to your sudoers file. Type &#8220;visudo&#8221; at the bash shell (logged in as root).</li>
+<li>Add
+
+
+<pre><code>www-data ALL=NOPASSWD: /srv/www/www.domain.com/public_html/git-puller.sh</code></pre>
+
+
+</li>
+<li>Then su www-data and CHMOD git-puller.sh 777 to make it executable</li>
+<li>Finally try making commits and pushing to Github locally. Wait a few seconds and see it the changes are reflected on your server.</li>
+</ul>
+<h2>Final notes</h2>
+<p>This process may take some tinkering. Problems can usually be attributed to incorrect permissions. Everything must run as the Apache or Nginx user. Make sure the &#8220;git-puller.sh&#8221; script is executable. You can always test the script in bash by</p>
+
+
+<pre><code>sudo -u www-data ./git-puller.ph</code></pre>
+
+
+<p>It also helps to log the data to &#8220;github.txt&#8221; to see if you are getting results back. Make sure that is also writable. This process won&#8217;t work with PHP SafeMode on.</p>
+<p>Hope this helps someone. If you find any errors or have a better suggestion let me know.</p>
+
+	    
+<div id="disqus_thread">
+            <div id="dsq-content">
+
+
+            <ul id="dsq-comments">
+                    <li class="comment even thread-even depth-1" id="dsq-comment-2220">
+        <div id="dsq-comment-header-2220" class="dsq-comment-header">
+            <cite id="dsq-cite-2220">
+                <span id="dsq-author-user-2220">skube</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-2220" class="dsq-comment-body">
+            <div id="dsq-comment-message-2220" class="dsq-comment-message"><p>I&#8217;m confused by your very first step. Can you explain that line further?</p>
+</div>
+        </div>
+
+    <ul class="children">
+    <li class="comment byuser comment-author-tegan bypostauthor odd alt depth-2" id="dsq-comment-3861">
+        <div id="dsq-comment-header-3861" class="dsq-comment-header">
+            <cite id="dsq-cite-3861">
+                <span id="dsq-author-user-3861">tegan</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-3861" class="dsq-comment-body">
+            <div id="dsq-comment-message-3861" class="dsq-comment-message"><p>Sure just create a file called git-puller.sh and put the path to your application:</p>
+
+
+<pre><code>
+cd /full_server_path/to/my/application/on/my/server_or_webhost &amp;&amp; /usr/lib/git-core/git pull &amp;&amp; cd -
+</code></pre>
+
+
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-4200">
+        <div id="dsq-comment-header-4200" class="dsq-comment-header">
+            <cite id="dsq-cite-4200">
+                <span id="dsq-author-user-4200">Private</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-4200" class="dsq-comment-body">
+            <div id="dsq-comment-message-4200" class="dsq-comment-message"><p>this should be working with private git repository? since locally any git pull requires user/pass for git access. Same request will be raised by /git pull in bash file.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-5668">
+        <div id="dsq-comment-header-5668" class="dsq-comment-header">
+            <cite id="dsq-cite-5668">
+                <span id="dsq-author-user-5668">Xavier</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-5668" class="dsq-comment-body">
+            <div id="dsq-comment-message-5668" class="dsq-comment-message"><p>hi ;; pls i need help ,, i make a php script to get the payload and write it into a txt file but nothing work ,, i name my php script getjson.php </p>
+<p>i add the <a href="http://www.domaine.com/getjson.php" rel="nofollow">http://www.domaine.com/getjson.php</a> to webhook but it do t work.<br />
+help me if u can plz</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment even thread-odd thread-alt depth-1" id="dsq-comment-5669">
+        <div id="dsq-comment-header-5669" class="dsq-comment-header">
+            <cite id="dsq-cite-5669">
+                <span id="dsq-author-user-5669">Xavier</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-5669" class="dsq-comment-body">
+            <div id="dsq-comment-message-5669" class="dsq-comment-message"><p>this is my script </p>
+<p>error_reporting(E_ALL);</p>
+<p>ini_set(&#8216;display_errors&#8217;, &#8216;1&#8217;);</p>
+<p>set_time_limit(0);</p>
+<p>try {</p>
+<p>  $payload = json_decode($_REQUEST['payload']);</p>
+<p>  file_put_contents(&#8216;/var/www/filetest.txt&#8217;, &#8216;ca marche&#8217;);</p>
+<p>}</p>
+<p>catch(Exception $e) {</p>
+<p>    //log the error</p>
+<p>    file_put_contents(&#8216;/var/www/filetest.txt&#8217;, $e . &#8216; &#8216; . $payload, FILE_APPEND);</p>
+<p>      exit(0);</p>
+<p>}</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment odd alt thread-even depth-1" id="dsq-comment-5673">
+        <div id="dsq-comment-header-5673" class="dsq-comment-header">
+            <cite id="dsq-cite-5673">
+                <span id="dsq-author-user-5673">tegansnyder</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-5673" class="dsq-comment-body">
+            <div id="dsq-comment-message-5673" class="dsq-comment-message"><p>For those of your finding this now. I recommend checking out: <a href="https://github.com/markomarkovic/simple-php-git-deploy" rel="nofollow">https://github.com/markomarkovic/simple-php-git-deploy</a></p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+            </ul>
+
+
+        </div>
+
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/git-webhook-php-post-receive-pull-method/';
+var disqus_identifier = '267 http://www.tegdesign.com/?p=267';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Git WebHook PHP Post Receive Pull Method";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=267';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

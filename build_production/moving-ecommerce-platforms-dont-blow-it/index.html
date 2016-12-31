@@ -1,0 +1,301 @@
+<!--
+Moving Ecommerce Platforms? Don&#8217;t Blow It.
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>Moving Ecommerce Platforms? Don&#8217;t Blow It.</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>Moving Ecommerce Platforms? Don&#8217;t Blow It.</h1>
+			    <p class="sub_txt">Posted on January 10, 2013 at 1:33 am</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>Two months ago I was a 26 years old with a great job in the utility industry. I was respected as a leader in web development for electric utilities (<a href="http://www.nppd.com">NPPD</a>). I <a href="http://www.slideshare.net/TeganSnyder">spoke</a> at conferences and I built mobile apps for people to pay their utility bills, report outages, and for our executive team to view how many megawatts Nebraska power plants were producing. It was a good gig. I had job security and I was promoted after two years of hard work, but after some reflecting and lots of drinking (they go hand in hand right?) I decided to leave my corporate job in the utility industry to work for a startup &#8211; <a href="http://www.bulubox.com">Bulu Box</a>.</p>
+<p><img class="alignleft size-medium wp-image-858 border-img" alt="First_Office" src="/img/First_Office-300x224.jpeg" width="300" height="224" />It&#8217;s funny how things work sometimes. For three solid months I lived directly above Bulu Box&#8217;s first office downtown Lincoln, NE. I follow the local startup scene and had heard of Bulu Box through some of the articles written by <a href="http://www.siliconprairienews.com" target="_blank">Silicon Praire News</a>.  I had planned to venture down my stairs and introduce myself as their upstairs neighbor, but never actually got around to doing it. Before I had a chance they had outgrown the small space below my apartment and moved to a new office in the Haymarket.</p>
+<p>Bulu Box&#8217;s <a href="http://www.bulubox.com/aboutus" target="_blank">Co-Founders</a> are <a href="http://www.linkedin.com/in/pauljarrett">Paul</a> and <a href="http://www.linkedin.com/in/stephaniejarrett">Stephanie Jarrett</a>. Paul and I started talking about ecommerce solutions in October. He had known about my entrepreneurial ambitions with Footwork, a mobile political canvassing application I co-founded and had been building up until the presidential election season ended. Building Footwork helped me create relationships with other Entrepreneurs and taught me to look at things from a new perspective. It made me better.</p>
+<p>My first task at Bulu Box was to identify a platform. We needed new features but the previous platform was limited. The first incarnation of Bulu Box was built using <a href="http://www.shopify.com/">Shopify</a>. Shopify provides a lot of the templating features that make it easy for people to get a nice e-commerce store up and running. Shopify was just one piece of our software stack, but it didn&#8217;t allow us to sell a combination of full size products and subscriptions together properly. In order to sell customers on their monthly supplement box service we needed a bolt-on service for handling recurring credit card payments. For this purpose we used <a href="http://recurly.com/">Recurly</a>. Shopify and Recurly worked great to get Bulu Box off the ground, but it created confusion for our customers.</p>
+<hr />
+<h2><strong>The main Problem:</strong></h2>
+<p>We had two separate logins. Customers who purchased full sized products on Shopify had a separate login than our customers with subscriptions managed by Recurly. This was super confusing! Take a look at this screenshot from our old website (would you know where to sign up?):</p>
+<div class="wp-caption"><img alt="" src="/img/Screen-Shot-2012-12-14-at-8.06.24-PM.png" /></div>
+<p>The old solution was implementing the API for Recurly and Shopify. In theory this was a crafty solution, but Shopify&#8217;s API was the hold up.</p>
+<p><strong>Here is an excerpt from an email I sent to Shopify.</strong></p>
+<hr />
+<div class="wp-caption"><img alt="" src="/img/Screen-Shot-2012-12-14-at-8.01.51-PM.png" /></div>
+<p><strong>Their response:</strong></p>
+<hr />
+<div class="wp-caption"><img alt="" src="/img/Screen-Shot-2012-12-14-at-8.02.22-PM.png" /></div>
+<p>Basically, our idea to programmatically create Recurly and Shopify accounts at the same time was not possible.</p>
+<hr />
+<h2>The secondary problem:</h2>
+<p>Recurly had no way to store shipping information, it just held billing information associated with credit cards. In order for us to track shipping information, we hooked Recurly into Mailchimp. This was a dismal solution at best, and we frequently ran into situations where data was incorrect and not synched.</p>
+<h2>So whats the solution?</h2>
+<p>We needed to move our website and customers to a more flexible platform that allowed us to have access to the source code to make our own systems.</p>
+<div class="wp-caption"><img alt="" src="/img/Screen-Shot-2012-12-14-at-8.07.41-PM.png" /></div>
+<p>I have experience with multiple ecommerce platforms, building websites using OSCommerce, Cube Cart, Zen Cart, but after learning lots of things the hard way I finally settled on Magento. I took a 3 year break from building Magento sites (after leaving <a href="http://www.irishtitan.com">IrishTitan.com</a> for <a href="http://www.nppd.com">NPPD</a>) and when I got back in I realized it has come a long way. It is versatile and offers a wide variety of extensions and solutions to get a customized ecommerce system put in place. Most recently, as of version 1.4 (latest CE Edition 1.7.0.2 as of writing), it offers a feature called Recurring Profiles. Magento still attaches the label &#8220;beta&#8221; to Recurring Profiles, but with a little bit of due diligence and proper tweaking it&#8217;s possible to create a custom subscription service and ecommerce website using the platform.</p>
+<p>When we decided to move our website to Magento we had a few big hurdles to tackle.</p>
+<div class="wp-caption"><img alt="" src="/img/Screen-Shot-2012-12-14-at-8.38.54-PM.png" /></div>
+<h2><strong>Going live:</strong></h2>
+<p><img class="size-medium wp-image-861 alignright border-img" alt="LateNight" src="/img/LateNight-224x300.jpeg" width="224" height="300" />We had lots of little things to figure before we decided to push the big red button. We needed a way to smoothly transition our Recurly subscriptions into Magento customers with recurring profiles. No big deal right? This was a daunting task.</p>
+<p>Luckily, Recurly was able to provide us with the data to make this happen. They had been very good to us and I was sad to see them go, but we had just out grown the need for them and had the talent to build our own solutions with Magento.</p>
+<p>Out of the box Magento Recurring Profiles only work with Paypal Payments, which means in order for them to work with Authorize.Net CIM we needed to find an extension or develop our own. I ended up settling on an Authorize.Net CIM &#8211; Payment model by <a href="http://www.paradoxlabs.com/">Paradox Labs</a>. In order to import our Recurly customers into Magento we needed to understand how Recurring Profiles work.</p>
+<p>What we were able to do was piece together some code to programmatically create recurring profiles for a list of customers and their credit cards in a file. This was a big accomplishment that allowed us to seamlessly move our customers and their credit card information. We didn&#8217;t want our customers to have to re-enter their information for our new website.</p>
+<p>I also modified the way the Magento Recurring Profile grids work. Here is a sample of some of that code: <a href="https://github.com/tegansnyder/Magento-Recurring-Beta-Grid-Improvements">https://github.com/tegansnyder/Magento-Recurring-Beta-Grid-Improvements</a></p>
+<div class="wp-caption"><img class="alignnone size-full wp-image-840" alt="Magento Recurring Grid Improvements" src="/img/skitch.png" /></div>
+<h2>Lets put this sucker live</h2>
+<p>My first month at Bulu Box was spent working on the new website. It was our day and night and soon we began to see the light at the end of the tunnel. Our goal was to have it live the first week of December.</p>
+<div class="wp-caption"><img alt="launch" src="/img/launch.jpg" /></div>
+<p><img class="alignleft size-medium wp-image-862 border-img" alt="TAPEYAY" src="/img/TAPEYAY-224x300.jpeg" width="224" height="300" /></p>
+<p>So we hunkered down, set goals, and did lots of white boarding. Finally, late one Sunday night it was ready to go. We flipped DNS from Shopify to our Amazon EC2 hosting Magento, turned off Recurly and prepared for our first customer on the new website. It happened at exactly 12:01am and it worked great!</p>
+<p>The next week was spent fine tuning and fixing issues as they came up. This was our &#8220;silent launch&#8221; period for finding problems before we had a bunch of interested people flood the site and find them for us. Anytime you make a big change you are bound to have a few hiccups here and there, but we wanted to minimize them.</p>
+<p>Overall the entire experience has been well worth it. The effort of our team and the fun times we had building it are part of the rush you get in a startup. In more ways than one, we taped together a solution that allows us to do what we do best. Get sample boxes in happy customers hands and have fun doing it!</p>
+<p>With that being said, if you feel like discovering some new vitamins and supplements feel free to use my last name &#8220;Snyder&#8221; as a coupon code. Your first month is on me <img src="http://www.tegdesign.com/wp-includes/images/smilies/icon_smile.gif" alt=":)" class="wp-smiley" /></p>
+<hr />
+<h2><strong>Some Magento Hurdles:</strong></h2>
+<p style="padding-left: 30px;"><strong>Coupon Codes on Nominal Products</strong><br />
+As of version CE 1.7.0.2 Magento doesn&#8217;t do a good job of displaying the coupon code (discount code) used on nominal products (recurring profiles). That means if a customer entered a coupon code while checking out with a product, the front end didn&#8217;t do a good job of showing the correct totals. We had to override the cart controller files and the recurring sales order files to get a proper display setup.</p>
+<p style="padding-left: 30px;"><strong>Coupon Codes being reinstated</strong><br />
+Magento recurring profiles also apply the discount code to a recurring product each time a new bill is issued. This is a big thing we had to overcome. A lot of our customers subscribe by using a coupon code to get their first box free. We want to make sure we charge them accordingly when their bill is due the next bill cycle.</p>
+<p style="padding-left: 30px;"><strong>Speed improvements<br />
+</strong>Magento is big beast of PHP resources. We are hosting our website over multiple EC2 instances, using Memcache, eAccelerator, Cloudfront (CDN), and Amazon RDS for Mysql DB instances. We still have some tweaks here and there to improve page loading. <a href="http://www.Blitz.io">Blitz.io</a> has been a good tool for load testing the website.</p>
+<pre style="padding-left: 30px;">-p 1-25:60 -T 2000 http://www.domain.com/checkout/cart/add?product=5267&amp;qty=1</code></pre>
+
+
+<p style="padding-left: 30px;">This will ramp up from 1 to 25 simultaneous users over a 60 second period with a 2000 ms timeout, all trying to add that particular product to their cart. This is a fantastic way to begin triangulating how much traffic your store can handle.</p>
+<p style="padding-left: 30px;"><strong>Logging errors<br />
+</strong>For the time being we have silent error logging on. This allows us to monitor the log files Magento and Apache make and fix problems as they arise. I have been testing <a href="https://papertrailapp.com/">Papertrail</a> for the past few weeks and it is working great, so great that we decided to get the dev team a <a href="https://www.mcmelectronics.com/">Raspberry Pi</a> which now displays the log files in realtime.</p>
+<div class="wp-caption"><img alt="Raspberry Pi + Papertrail for logging" src="/img/raspi.jpg" /></div>
+	<video id="wp_mep_1" src="/img/launch_bulu.mp4"  width="568" height="320"  controls="controls" preload="none"  >
+		
+		
+		
+		
+		
+		
+		
+		<object width="568" height="320" type="application/x-shockwave-flash" data="http://www.tegdesign.com/wp-content/plugins/media-element-html5-video-and-audio-player/mediaelement/flashmediaelement.swf">
+			<param name="movie" value="http://www.tegdesign.com/wp-content/plugins/media-element-html5-video-and-audio-player/mediaelement/flashmediaelement.swf" />
+			<param name="flashvars" value="controls=true&amp;file=/img/launch_bulu.mp4" />			
+		</object>		
+	</video>
+<script>
+jQuery(document).ready(function($) {
+	$('#wp_mep_1').mediaelementplayer({
+		m:1
+		
+		,features: ['playpause','current','progress','duration','volume','tracks','fullscreen']
+		
+	});
+});
+</script>
+
+
+	    
+<div id="disqus_thread">
+            <div id="dsq-content">
+
+
+            <ul id="dsq-comments">
+                    <li class="post pingback">
+        <p>Pingback: <a href='http://cmonitor.wordpress.com/2013/01/24/moving-ecommerce-platforms/' rel='external nofollow' class='url'>Moving Ecommerce Platforms | c monitor</a>()</p>
+    </li>
+    </li><!-- #comment-## -->
+    <li class="comment even thread-even depth-1" id="dsq-comment-2079">
+        <div id="dsq-comment-header-2079" class="dsq-comment-header">
+            <cite id="dsq-cite-2079">
+                <span id="dsq-author-user-2079">Hal</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-2079" class="dsq-comment-body">
+            <div id="dsq-comment-message-2079" class="dsq-comment-message"><p>Nice! Tricky to move a working site to a better working site while keeping the business up. Thanks for sharing your experience.</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment odd alt thread-odd thread-alt depth-1" id="dsq-comment-2087">
+        <div id="dsq-comment-header-2087" class="dsq-comment-header">
+            <cite id="dsq-cite-2087">
+http://frankverdeja.com                <span id="dsq-author-user-2087">Frank</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-2087" class="dsq-comment-body">
+            <div id="dsq-comment-message-2087" class="dsq-comment-message"><p>For all of the headaches we&#8217;ve had, I&#8217;m still a big believer in the power of Magento.  Congrats on your successful migration!</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+    <li class="comment even thread-even depth-1" id="dsq-comment-4429">
+        <div id="dsq-comment-header-4429" class="dsq-comment-header">
+            <cite id="dsq-cite-4429">
+                <span id="dsq-author-user-4429">Kalen</span>
+            </cite>
+        </div>
+        <div id="dsq-comment-body-4429" class="dsq-comment-body">
+            <div id="dsq-comment-message-4429" class="dsq-comment-message"><p>Hey Tegan!</p>
+<p>This is a really interesting post, thanks for all of this.  As you saw from my magento.se post, I decided not to go with recurring profiles for a few reasons.  I was curious to know a bit more about some of the reasons you decided to go this route.</p>
+<p>&#8211; You described some of the complications of syncing shopify accounts up, but I&#8217;m not sure I understand what the problems with Recurly were?<br />
+&#8211; You mentioned that you needed to get shipping information tied into Recurly &#8211; what were the features you were trying to support?</p>
+<p>While I really did want to be able to build off of Magento&#8217;s framework, I still feel pretty comfortable with my decision to work around it in this particular case for the reasons mentioned in my post:<br />
+&#8211; Ability to checkout with both nominal and recurring products in the same cart<br />
+&#8211; Ability to have a Buy Now and Subscribe option for a single product page (that may not be something you guys at all need for your biz model though)<br />
+&#8211; Worked around some shipping method hiccups we were experiencing with Shipwire live shipping rates</p>
+<p>Also in response to some of the hiccups that you mentioned that you encountered:<br />
+&#8211; Didn&#8217;t have any issues with using coupon codes<br />
+&#8211; Not much effort needed to avoid coupon codes reinstating<br />
+&#8211; No additional performance burden</p>
+<p>There are a couple of features that still need to be built though, but I&#8217;m not sure if Recurring Profiles would have helped:<br />
+&#8211; Need to update subscription pricing with variable live shipping rates on an ongoing basis<br />
+&#8211; Need to add support for coupon codes that *should* reinstate</p>
+<p>Also the entire effort probably took about a week or so worth of work, and there&#8217;s less code and more simplicity in general.</p>
+<p>Thanks!<br />
+Kalen</p>
+</div>
+        </div>
+
+    </li><!-- #comment-## -->
+            </ul>
+
+
+        </div>
+
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/moving-ecommerce-platforms-dont-blow-it/';
+var disqus_identifier = '298 http://www.tegdesign.com/?p=298';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Moving Ecommerce Platforms? Don&#8217;t Blow It.";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=298';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

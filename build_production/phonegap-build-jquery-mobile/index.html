@@ -1,0 +1,192 @@
+<!--
+PhoneGap Build + JQuery Mobile
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>PhoneGap Build + JQuery Mobile</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>PhoneGap Build + JQuery Mobile</h1>
+			    <p class="sub_txt">Posted on December 4, 2011 at 5:39 pm</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>I recently used PhoneGap build to turn a JQuery Mobile application into a native app for both iOS and Android. My first impression seems to be a little disappointed in the responsiveness of the application compared to it&#8217;s web counterpart.</p>
+<p>One of the things that may through off first time PhoneGap build users is their submission process. The currently only allow you to submit one icon for the iOS build while you need two. One for retina and one for non-retina. 57&#215;57 and 72&#215;72 respectively.</p>
+<p>To solve that issue it is necessary to build a config.xml file. Here is an example:</p>
+
+
+<pre><code>
+&lt;widget xmlns	= &quot;http://www.w3.org/ns/widgets&quot;
+	xmlns:gap	= &quot;http://phonegap.com/ns/1.0&quot;
+	id		    = &quot;com.companyname.someappname&quot;
+	version 	= &quot;1.0&quot;&gt;
+
+	&lt;name&gt;Some App Name&lt;/name&gt;
+
+	&lt;description&gt;
+Some App Name description
+	&lt;/description&gt;
+
+	&lt;author href=&quot;http://www.someapp.com&quot;
+		email=&quot;<a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="592c2a3c2b192a36343c382929773a3634">[email&nbsp;protected]</a><script type="text/javascript">
+/* <![CDATA[ */
+(function(){try{var s,a,i,j,r,c,l,b=document.getElementsByTagName("script");l=b[b.length-1].previousSibling;a=l.getAttribute('data-cfemail');if(a){s='';r=parseInt(a.substr(0,2),16);for(j=2;a.length-j;j+=2){c=parseInt(a.substr(j,2),16)^r;s+=String.fromCharCode(c);}s=document.createTextNode(s);l.parentNode.replaceChild(s,l);}}catch(e){}})();
+/* ]]> */
+</script>&quot;&gt;
+		Some App Name Company
+	&lt;/author&gt;
+
+  &lt;icon src=&quot;icons/icon-iphone-72.png&quot; width=&quot;72&quot; height=&quot;72&quot; /&gt;
+  &lt;icon src=&quot;icons/icon-iphone-57.png&quot; width=&quot;57&quot; height=&quot;57&quot; /&gt;
+
+  &lt;gap:splash src=&quot;splashes/splash.png&quot; /&gt;
+&lt;/widget&gt;
+</code></pre>
+
+
+<p>Simply archive this xml file along with your JQM files and upload it to PhoneGap build.<br />
+Note: If you are having troubles uploading your application to the app store use an older version of Apple&#8217;s application loader.</p>
+
+	    
+<div id="disqus_thread">
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/phonegap-build-jquery-mobile/';
+var disqus_identifier = '137 http://www.tegdesign.com/?p=137';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "PhoneGap Build + JQuery Mobile";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=137';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

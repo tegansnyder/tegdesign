@@ -1,0 +1,220 @@
+<!--
+Import User List from Excel File into .Net Membership Provider
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>Import User List from Excel File into .Net Membership Provider</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>Import User List from Excel File into .Net Membership Provider</h1>
+			    <p class="sub_txt">Posted on September 2, 2010 at 4:17 pm</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>So you have an existing ASP.NET Membership Provider and now your just got handed a Excel file full of username&#8217;s and passwords. Today I was faced with the task of writing a simple import script to take users from a Excel file and bring them into the membership database.<br />
+<span id="more-75"></span></p>
+<p>The code example below assumes you have a Microsoft Excel file (.xls) with a column called &#8220;user&#8221; and another column called &#8220;password&#8221;.</p>
+
+
+<pre><code class="cs">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.Common;
+using System.Web.Security;
+using System.Web.Profile;
+
+public partial class admin_admin_Import : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+        string connectionString = @&quot;Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\users.xls;Extended Properties=&quot;&quot;Excel 8.0;HDR=YES;&quot;&quot;&quot;;
+
+        DbProviderFactory factory = DbProviderFactories.GetFactory(&quot;System.Data.OleDb&quot;);
+
+        using (DbConnection connection = factory.CreateConnection())
+        {
+            connection.ConnectionString = connectionString;
+
+            using (DbCommand command = connection.CreateCommand())
+            {
+                // Users$ comes from the name of the worksheet
+                command.CommandText = &quot;SELECT user,password FROM [Users$]&quot;;
+
+                connection.Open();
+
+                using (DbDataReader dr = command.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+
+
+
+                        if (Membership.GetUser(dr[&quot;user&quot;].ToString()) == null)
+                        {
+
+                            Membership.CreateUser(dr[&quot;user&quot;].ToString(), dr[&quot;password&quot;].ToString());
+
+                        }
+                       
+                    } 
+
+                }
+            }
+        }
+    }
+
+}
+</code></pre>
+
+
+	    </div>
+	    <footer>
+	      	      <ul class="entry-tags"><li><a href="/tag/asp-net/" rel="tag">ASP.NET</a></li><li><a href="/tag/c/" rel="tag">C#</a></li></ul>	    </footer>
+	    
+<div id="disqus_thread">
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/import-user-list-from-excel-file-into-net-membership-provider/';
+var disqus_identifier = '75 http://www.tegdesign.com/?p=75';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Import User List from Excel File into .Net Membership Provider";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=75';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

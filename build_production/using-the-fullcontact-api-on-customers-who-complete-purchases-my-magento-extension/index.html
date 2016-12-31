@@ -1,0 +1,162 @@
+<!--
+Using the FullContact API on customers who complete purchases. My Magento Extension.
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>Using the FullContact API on customers who complete purchases. My Magento Extension.</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>Using the FullContact API on customers who complete purchases. My Magento Extension.</h1>
+			    <p class="sub_txt">Posted on December 24, 2012 at 7:30 pm</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+	      <div class="wp-caption"><img alt="" src="https://raw.github.com/tegansnyder/Magento-FullContact-After-Sale-Customer-Details/master/screenshot1.png" /></div>
+<p>If you are not familiar with FullContact check out their website at: <a href="http://www.fullcontact.com">http://www.fullcontact.com</a>. They have a nifty service that allows developers to gather social details for an email address. For instance, lets say a customer makes a purchase at your e-commerce website. What if after they made a purchase you could identify them as a influential blogger and reach out to them and offer a discount for writing a review of your product.</p>
+<p>I built a very basic Magento extension that pulls the FullContact API and puts the details in a table for you to view.</p>
+<p>Note: You will need a FullContact API key to get started.</p>
+<p><a class="btn btn-primary" href="https://github.com/tegansnyder/Magento-FullContact-After-Sale-Customer-Details">Source code at Github</a></p>
+<div class="wp-caption"><img alt="" src="https://raw.github.com/tegansnyder/Magento-FullContact-After-Sale-Customer-Details/master/screenshot2.png" /></div>
+
+	    
+<div id="disqus_thread">
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/using-the-fullcontact-api-on-customers-who-complete-purchases-my-magento-extension/';
+var disqus_identifier = '826 http://www.tegdesign.com/?p=826';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Using the FullContact API on customers who complete purchases. My Magento Extension.";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=826';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

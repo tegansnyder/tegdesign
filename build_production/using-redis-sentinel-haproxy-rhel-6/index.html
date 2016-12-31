@@ -1,0 +1,190 @@
+<!--
+Using PHP ZTS Zend Thread Safety module and pthreads on PHP7 Webstatic Repo Centos RHEL
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>Using PHP ZTS Zend Thread Safety module and pthreads on PHP7 Webstatic Repo Centos RHEL</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>Using Redis + Sentinel HAProxy RHEL 6</h1>
+			    <p class="sub_txt">Posted on May 27, 2016 at 6:45 pm</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+<p>Here are some of my notes.</p>
+
+<pre><code class="bash">sudo yum install -y mock
+sudo useradd -s /sbin/nologin mockbuild
+wget http://ftp.redhat.com/pub/redhat/linux/enterprise/6Server/en/os/SRPMS/haproxy-1.5.4-3.el6.src.rpm
+sudo mock -r epel-6-x86_64 haproxy-1.5.4-3.el6.src.rpm
+cd /var/lib/mock/epel-6-x86_64/result
+sudo rpm -ivh haproxy-1.5.4-3.el6.x86_64.rpm
+rpm -qa|grep haproxy</code></pre>
+
+
+
+<p><strong>config</strong></p>
+
+
+<pre><code class="bash">sudo vi /etc/haproxy/haproxy.cfg</code></pre>
+
+<p><strong>For redis sentinel haproxy</strong></p>
+
+
+<pre><code class="bash">global
+	daemon
+	maxconn 256
+
+defaults
+	mode tcp
+	timeout connect 4s
+	timeout server  30s
+	timeout client  30s
+
+
+frontend http
+	bind :8080
+	default_backend stats
+
+backend stats
+	mode http
+	stats enable
+	stats uri	 /
+	stats refresh 1s
+	stats show-legends
+	stats admin if TRUE
+
+frontend redis-alpha
+	bind *:26379
+	default_backend redis-alpha
+
+backend redis-alpha
+	mode tcp
+	balance first
+	option tcp-check
+	option tcplog
+	tcp-check send AUTH\ YOUR_REDIS_AUTH_PASSWORD_HERE\r\n
+	tcp-check send PING\r\n
+	tcp-check expect string +PONG
+	tcp-check send info\ replication\r\n
+	tcp-check expect string role:master
+	tcp-check send QUIT\r\n
+	tcp-check expect string +OK
+
+	server redis-1 X.10.29.44:6379 maxconn 1024 check inter 1s
+	server redis-2 X.10.56.235:6379 maxconn 1024 check inter 1s
+	server redis-3 X.10.29.221:6379 maxconn 1024 check inter 1s
+	server redis-4 X.10.29.215:6379 maxconn 1024 check inter 1s
+	server redis-5 X.10.29.214:6379 maxconn 1024 check inter 1s</code></pre>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'http://tegdesign.com/using-php-zts-zend-thread-safety-module-and-pthreads-on-php7-webstatic-repo-centos-rhel';
+this.page.identifier = 'using-php-zts-zend-thread-safety-module-and-pthreads-on-php7-webstatic-repo-centos-rhel';
+};
+
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//tegdesign.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+                                
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

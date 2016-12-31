@@ -1,0 +1,646 @@
+<!--
+Querying the Github API with Golang to find all Magento Repositories
+page-blog-post
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="/css/syntax-highlighter/dracula.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<title>Querying the Github API with Golang to find all Magento Repositories</title>    </head>
+    <body class="page-blog-post">
+
+    	<header>
+
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4 no-pad-lr logo-wrapper">
+				<div class="logo-container">
+					<span class="logo" onclick="window.location='/'">
+						<strong>teg</strong>
+						<span>design</span>
+					</span>
+					<span class="motto">
+						web work by tegan snyder
+					</span>
+				</div>
+			</div>
+
+			<div class="col-xs-7 col-sm-8 col-md-8 col-lg-8 nav-wrapper">
+				<nav class="pull-right">
+					<a href="/" class="home-link">Home</a>
+					<a href="/about">About</a>
+					<a href="/blog">Blog</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</div>
+
+		</div>
+
+	</div>
+
+</header>
+    	<div class="page-wrapper">
+        	
+<section class="jumbotron-wrapper">
+
+	<div class="container jumbotron-container">
+
+		<div class="row">
+
+			<div class="jumbotron">
+			    <h1>Querying the Github API with Golang to find all Magento Repositories</h1>
+			    <p class="sub_txt">Posted on September 10, 2014 at 4:14 am</p>
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>The purpose of this post is to describe my first attempt at a Golang programing. I decided it would be neat to use Golang to query the Github API for list Magento repositories and the location associated with the owner of the repository. If you search Github for: &#8220;magento language:php&#8221; at the time of this writing you get around 3000+ repositories. <a href="https://github.com/search?l=PHP&amp;q=magento&amp;type=Repositories&amp;utf8=%E2%9C%93" target="_blank">See for yourself</a>.</p>
+<p>All Github repositories are owned by a Github user or organization. A Github user or organization can choose to displaying their geographic location in their Github profile. Since I work daily with Magento I thought it would be neat to get a list of geographic locations associated with the 3000+ Magento repos. <b>Please note:</b> I&#8217;m almost certain there is a better way of doing this, but this is my first time writing a Golang program so who cares?</p>
+<h3>Let&#8217;s get started why dont we</h3>
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/golang">@golang</a> gopher writing some files <a href="http://t.co/O0MZMnzPWr">pic.twitter.com/O0MZMnzPWr</a></p>
+<p>— Tegan Snyder (@tegansnyder) <a href="https://twitter.com/tegansnyder/statuses/505055482084462592">August 28, 2014</a></p></blockquote>
+<p><script charset="utf-8" data-rocketsrc="//platform.twitter.com/widgets.js" type="text/rocketscript" ></script></p>
+<p>If you don&#8217;t already have Golang I suggest you download it by following the instructions here: <a href="http://golang.org/doc/install">http://golang.org/doc/install</a></p>
+<p>There is one caveat. If you are on OSX you will need to make sure to add the following lines to your ~/.bash_profile file:</p>
+
+
+<pre><code class="bash">
+vi ~/.bash_profile
+# add line below to end of it
+export PATH=$PATH:/usr/local/go/bin
+</code></pre>
+
+
+<p>Then save and reload your bash PATHS by issuing:</p>
+
+
+<pre><code class="bash">
+source ~/.bash_profile
+</code></pre>
+
+
+<p>Before we get started lets create a nice place for all of your Go projects. Create a directory in your home directory. For example I have a &#8220;Dev&#8221; folder in my &#8220;/users/tegan/Dev/&#8221;&#8221; path. I just created another folder called &#8220;golang&#8221; in that folder to hold my Go projects.</p>
+<p>When you have the folder created you next need to setup your &#8220;GOPATH&#8221;.</p>
+
+
+<pre><code class="bash">
+vi ~/.bash_profile
+# add these lines to end
+export GOPATH=$HOME/Dev/golang
+export PATH=$GOPATH/bin:$PATH
+</code></pre>
+
+
+<p>Now lets get started by creating a &#8220;main.go&#8221; file in: <strong>/users/tegan/Dev/golang/</strong></p>
+<p><strong>File: main.go</strong></p>
+
+
+<pre><code class="go">
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;github.com/google/go-github/github&quot;
+)
+
+func main() {
+    client := github.NewClient(nil)
+
+    fmt.Println(&quot;Repos that contain magento and PHP code.&quot;)
+
+    query := fmt.Sprintf(&quot;magento+language:php&quot;)
+
+    opts := &amp;github.SearchOptions{
+        Sort: &quot;stars&quot;,
+        ListOptions: github.ListOptions{
+            PerPage: 100,
+        },
+    }
+
+    repos, _, err := client.Search.Repositories(query, opts)
+
+    if err != nil {
+        fmt.Printf(&quot;error: %v\n\n&quot;, err)
+    } else {
+        fmt.Printf(&quot;%v\n\n&quot;, github.Stringify(repos))
+    }
+
+    rate, _, err := client.RateLimit()
+    if err != nil {
+        fmt.Printf(&quot;Error fetching rate limit: %#v\n\n&quot;, err)
+    } else {
+        fmt.Printf(&quot;API Rate Limit: %#v\n\n&quot;, rate)
+    }
+}
+</code></pre>
+
+
+<p>Now run this file:</p>
+
+
+<pre><code class="bash">
+go run main.go
+</code></pre>
+
+
+<p>If it works you should get a list of all Github repos that contain PHP code and have the word &#8220;magento&#8221; somewhere in the code. The format will be json output. Note from the import statement (&#8220;go-github/github&#8221;) we are including a library that Google wrote to make dealing with Github repositories in go really simple.</p>
+<p>Lets say we want to spice it up a little bit and get a little fancier. I&#8217;m taking bits and pieces from some other Golang examples I found browsing Github and I put together this:</p>
+
+
+<pre><code class="go">
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;github.com/google/go-github/github&quot;
+    &quot;log&quot;
+    &quot;math&quot;
+    &quot;time&quot;
+)
+
+const (
+    REMAINING_THRESHOLD = 1
+)
+
+func main() {
+    client := github.NewClient(nil)
+
+    fmt.Println(&quot;Repos that contain magento and PHP code.&quot;)
+
+    page := 1
+    maxPage := math.MaxInt32
+
+    query := fmt.Sprintf(&quot;magento+language:php&quot;)
+
+    opts := &amp;github.SearchOptions{
+        Sort: &quot;stars&quot;,
+        ListOptions: github.ListOptions{
+            PerPage: 100,
+        },
+    }
+
+    for page &lt;= maxPage {
+        opts.Page = page
+        result, response, err := client.Search.Repositories(query, opts)
+        Wait(response)
+
+        if err != nil {
+            log.Fatal(&quot;FindRepos:&quot;, err)
+        }
+
+        maxPage = response.LastPage
+
+        msg := fmt.Sprintf(&quot;page: %v/%v, size: %v, total: %v&quot;,
+            page, maxPage, len(result.Repositories), *result.Total)
+        log.Println(msg)
+
+        for _, repo := range result.Repositories {
+
+            fmt.Println(&quot;repo: &quot;, *repo.FullName)
+            fmt.Println(&quot;owner: &quot;, *repo.Owner.Login)
+
+            time.Sleep(time.Millisecond * 500)
+
+        }
+
+        page++
+
+    }
+
+}
+
+func Wait(response *github.Response) {
+    if response != nil &amp;&amp; response.Remaining &lt;= REMAINING_THRESHOLD {
+        gap := time.Duration(response.Reset.Local().Unix() - time.Now().Unix())
+        sleep := gap * time.Second
+        if sleep &lt; 0 {
+            sleep = -sleep
+        }
+
+        time.Sleep(sleep)
+    }
+}
+</code></pre>
+
+
+<p>Now we have a list of all the Github repositories on Github that are Magento related we can do some interesting stuff. Lets say we want to get a list of all the Magento repository owners and group them by their geographic location to get a comprehensive list of Magento repositories on Github geographically. Here is a way to do that.</p>
+<p>Lets start by adding pulling in the Github user locations:</p>
+
+
+<pre><code class="go">
+    for _, repo := range result.Repositories {
+
+        repo_name := *repo.FullName
+        username := *repo.Owner.Login
+
+        fmt.Println(&quot;repo: &quot;, repo_name)
+        fmt.Println(&quot;owner: &quot;, username)
+
+        user, response, err := client.Users.Get(username)
+        Wait(response)
+
+        if err != nil {
+            fmt.Println(err)
+        } else {
+
+            if user.Location != nil {
+                fmt.Println(&quot;location: &quot;, *user.Location)
+            } else {
+                fmt.Println(&quot;location: &quot;, user.Location)
+            }
+
+        }
+
+        time.Sleep(time.Millisecond * 500)
+
+    }
+
+    page++
+</code></pre>
+
+
+<p>That works great but you run into Github API <a href="https://developer.github.com/v3/rate_limit/">rate limit</a> issues. To get around that you can create an oAuth app at in your <a href="https://github.com/settings/applications/ ">application settings</a> page. Note you can always test your rate limit at at anytime by visiting: https://api.github.com/rate_limit?client_id=<strong>CLIENT_ID_HERE</strong>&amp;client_secret=<strong>CLIENT_SECRET_HERE</strong></p>
+<p>Here is my example with oAuth authentication. Note I&#8217;ve also put in a file writer so we can write everything to &#8220;/tmp/locations.txt&#8221;.</p>
+
+
+<pre><code class="go">
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;github.com/google/go-github/github&quot;
+    &quot;io&quot;
+    &quot;log&quot;
+    &quot;math&quot;
+    &quot;os&quot;
+    &quot;time&quot;
+)
+
+const (
+    REMAINING_THRESHOLD = 1
+)
+
+func main() {
+
+    t := &amp;github.UnauthenticatedRateLimitedTransport{
+        ClientID:     &quot;YOUR_CLIENT_ID_GOES_HERE&quot;,
+        ClientSecret: &quot;YOUR_CLIENT_SECRET_GOES_HERE&quot;,
+    }
+    client := github.NewClient(t.Client())
+
+    fmt.Println(&quot;Repos that contain magento and PHP code.&quot;)
+
+    page := 1
+    maxPage := math.MaxInt32
+
+    query := fmt.Sprintf(&quot;magento+language:php&quot;)
+
+    opts := &amp;github.SearchOptions{
+        Sort: &quot;stars&quot;,
+        ListOptions: github.ListOptions{
+            PerPage: 100,
+        },
+    }
+
+    filename := &quot;/tmp/repo_locations.csv&quot;
+
+    f, err := os.Create(filename)
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    for page &lt;= maxPage {
+        opts.Page = page
+        result, response, err := client.Search.Repositories(query, opts)
+        Wait(response)
+
+        if err != nil {
+            log.Fatal(&quot;FindRepos:&quot;, err)
+        }
+
+        maxPage = response.LastPage
+
+        msg := fmt.Sprintf(&quot;page: %v/%v, size: %v, total: %v&quot;,
+            page, maxPage, len(result.Repositories), *result.Total)
+        log.Println(msg)
+
+        for _, repo := range result.Repositories {
+
+            repo_name := *repo.FullName
+            username := *repo.Owner.Login
+
+            fmt.Println(&quot;repo: &quot;, repo_name)
+            fmt.Println(&quot;owner: &quot;, username)
+
+            user, response, err := client.Users.Get(username)
+            Wait(response)
+
+            if err != nil {
+                fmt.Println(err)
+            } else {
+
+                if user.Location != nil {
+
+                    user_location := *user.Location
+
+                    fmt.Println(&quot;location: &quot;, user_location)
+
+                    n, err := io.WriteString(f, &quot;\&quot;&quot;+username+&quot;\&quot;,\&quot;&quot;+user_location+&quot;\&quot;,\&quot;&quot;+repo_name+&quot;\&quot;\n&quot;)
+                    if err != nil {
+                        fmt.Println(n, err)
+                    }
+
+                }
+
+            }
+
+            time.Sleep(time.Millisecond * 500)
+
+        }
+
+        page++
+
+    }
+
+    f.Close()
+
+}
+
+func Wait(response *github.Response) {
+    if response != nil &amp;&amp; response.Remaining &lt;= REMAINING_THRESHOLD {
+        gap := time.Duration(response.Reset.Local().Unix() - time.Now().Unix())
+        sleep := gap * time.Second
+        if sleep &lt; 0 {
+            sleep = -sleep
+        }
+
+        time.Sleep(sleep)
+    }
+}
+</code></pre>
+
+
+<p>If you ran the above program you would find it quitting after producing 1000 records. This is because Github imposes a limit on the results returned by a search API call. The <a href="http://developer.github.com/v3/search/#about-the-search-api" rel="nofollow">Search API returns only the top 1000 results</a>. You could get around that restriction by slicing your search API query into multiple calls based on the <a href="https://help.github.com/articles/searching-repositories#created-and-last-updated" rel="nofollow">time that the repositories were created</a>.</p>
+<p>Here is the final version that gets around the 1000 limit by splitting the query into batches on the created_at times of the repositories:</p>
+
+
+<pre><code class="go">
+package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/google/go-github/github&quot;
+	&quot;io&quot;
+	&quot;log&quot;
+	&quot;math&quot;
+	&quot;os&quot;
+	&quot;time&quot;
+)
+
+const (
+	REMAINING_THRESHOLD = 1
+)
+
+func main() {
+
+	t := &amp;github.UnauthenticatedRateLimitedTransport{
+		ClientID:     &quot;YOUR_CLIENT_ID_GOES_HERE&quot;,
+		ClientSecret: &quot;YOUR_CLIENT_SECRET_GOES_HERE&quot;,
+	}
+	client := github.NewClient(t.Client())
+
+	fmt.Println(&quot;Repos that contain magento and PHP code.&quot;)
+
+	// create a file to be used for geocoder
+	filename := &quot;/tmp/locations.txt&quot;
+
+	f, err := os.Create(filename)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// slice the queries into batches to get around the API limit of 1000
+
+	queries := []string{&quot;\&quot;2008-06-01 .. 2012-09-01\&quot;&quot;, &quot;\&quot;2008-06-01 .. 2012-09-01\&quot;&quot;, &quot;\&quot;2012-09-02 .. 2013-04-20\&quot;&quot;, &quot;\&quot;2013-04-21 .. 2013-10-20\&quot;&quot;, &quot;\&quot;2013-10-21 .. 2014-03-10\&quot;&quot;, &quot;\&quot;2014-03-10 .. 2014-07-10\&quot;&quot;, &quot;\&quot;2014-07-10 .. 2014-09-30\&quot;&quot;}
+
+	for _, q := range queries {
+
+		query := fmt.Sprintf(&quot;magento language:PHP created:&quot; + q)
+
+		page := 1
+		maxPage := math.MaxInt32
+
+		opts := &amp;github.SearchOptions{
+			Sort:  &quot;updated&quot;,
+			Order: &quot;desc&quot;,
+			ListOptions: github.ListOptions{
+				PerPage: 100,
+			},
+		}
+
+		for page &lt;= maxPage {
+			opts.Page = page
+			result, response, err := client.Search.Repositories(query, opts)
+			Wait(response)
+
+			if err != nil {
+				log.Fatal(&quot;FindRepos:&quot;, err)
+			}
+
+			maxPage = response.LastPage
+
+			msg := fmt.Sprintf(&quot;page: %v/%v, size: %v, total: %v&quot;,
+				page, maxPage, len(result.Repositories), *result.Total)
+			log.Println(msg)
+
+			for _, repo := range result.Repositories {
+
+				repo_name := *repo.FullName
+				username := *repo.Owner.Login
+				created_at := repo.CreatedAt.String()
+
+				fmt.Println(&quot;repo: &quot;, repo_name)
+				fmt.Println(&quot;owner: &quot;, username)
+				fmt.Println(&quot;created_at: &quot;, created_at)
+
+				user, response, err := client.Users.Get(username)
+				Wait(response)
+
+				if err != nil {
+					fmt.Println(err)
+				} else {
+
+					if user.Location != nil {
+
+						user_location := *user.Location
+
+						n, err := io.WriteString(f, &quot;\&quot;&quot;+username+&quot;\&quot;,\&quot;&quot;+user_location+&quot;\&quot;,\&quot;&quot;+repo_name+&quot;\&quot;,\&quot;&quot;+created_at+&quot;\&quot;\n&quot;)
+						if err != nil {
+							fmt.Println(n, err)
+						}
+
+					} else {
+
+						user_location := &quot;not found&quot;
+
+						n, err := io.WriteString(f, &quot;\&quot;&quot;+username+&quot;\&quot;,\&quot;&quot;+user_location+&quot;\&quot;,\&quot;&quot;+repo_name+&quot;\&quot;,\&quot;&quot;+created_at+&quot;\&quot;\n&quot;)
+						if err != nil {
+							fmt.Println(n, err)
+						}
+
+					}
+
+				}
+
+				time.Sleep(time.Millisecond * 500)
+
+			}
+
+			page++
+
+		}
+
+	}
+
+	f.Close()
+
+}
+
+func Wait(response *github.Response) {
+	if response != nil &amp;&amp; response.Remaining &lt;= REMAINING_THRESHOLD {
+		gap := time.Duration(response.Reset.Local().Unix() - time.Now().Unix())
+		sleep := gap * time.Second
+		if sleep &lt; 0 {
+			sleep = -sleep
+		}
+
+		time.Sleep(sleep)
+	}
+}
+</code></pre>
+
+
+<p>Now that we have a nice list of repositories formatted like this:<br />
+&#8220;username,location,reponame,created_at&#8221;<br />
+Here is a full list of the what the file looks like:<br />
+<a href="https://gist.github.com/tegansnyder/07d376bc65f23f90cc36" target="_blank">Locations.txt Gist</a></p>
+<p><strong>Map Geocoding the Results with Node.js</strong><br />
+Wouldn&#8217;t it be nice if we put all the Magento repositories on a nice world map so we can plot the Github contributions to Magento around the world? Out of the 3650 repos we found 1193 didn&#8217;t have locations listed so we can use the remaining 2457 and see if we can plot them on a map.</p>
+<p>For geocoding the results into a nice map I used a Node.js geocoder from <a href="https://github.com/javierarce" target="_blank">Javier Arce</a> found here: <a href="https://github.com/javierarce/node-batch-geocoder" target="_blank">javierarce/node-batch-geocoder</a>.</p>
+<p>I will spare you the data messaging that I had to due to get the data in the correct format for Tilebox/<a href="http://www.mapbox.com" target="_blank">Mapbox</a>. Here is the map you&#8217;ve been waiting for:</p>
+<p><iframe width='100%' height='500px' frameBorder='0' src='https://a.tiles.mapbox.com/v4/tegan.jfa5c1en/attribution,zoompan,zoomwheel,geocoder,share.html?access_token=pk.eyJ1IjoidGVnYW4iLCJhIjoiRE9ZQ3NadyJ9.-UR73UUCcubKW7pOI2c5SA'></iframe></p>
+<p>Full source code available on Github here:<br />
+<a href="https://github.com/tegansnyder/Golang-Magento-Github-Repo-Search">https://github.com/tegansnyder/Golang-Magento-Github-Repo-Search</a></p>
+<p><strong>Subtle Golang differences</strong></p>
+<p>Since this is my first Golang program I thought I would share some of syntax and convention differences. This is by no means an exhaustive list, but here are a few that I found:</p>
+<ul>
+<li>Use ” double quotes not ‘ single quotes in a string. Go doesn’t like single quotes</li>
+<li>Use the plus + operator to append strings together not full stops.</li>
+<li>No semicolons</li>
+<li>Doesn’t care about tabbing</li>
+<li>No brackets around if statements</li>
+<li>Must use curly brackets – on if statements, for etc</li>
+<li>Every variable must be used</li>
+<li>functions can return multiple variables</li>
+<li>its nil not null</li>
+</ul>
+
+	    
+<div id="disqus_thread">
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/querying-github-api-golang-find-magento-repositories/';
+var disqus_identifier = '1008 http://www.tegdesign.com/?p=1008';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Querying the Github API with Golang to find all Magento Repositories";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=1008';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+        </div>
+
+        <footer class="container-fluid">
+	<div class="container">
+		<div class="row footer-row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<p>&copy; 2017 Tegan Snyder, All Rights Reserved.</p>
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="footer-question">
+					Have a question? <a href="/contact" class="contact-btn">Contact Me</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="/js/app.js"></script>        
+    </body>
+</html>

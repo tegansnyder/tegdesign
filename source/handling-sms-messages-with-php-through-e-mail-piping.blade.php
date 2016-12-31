@@ -1,0 +1,185 @@
+<!--
+{{ $page_title = 'Handling SMS Messages with PHP through E-mail Piping' }}
+{{ $page_body_class = 'page-blog-post' }}
+-->
+
+@extends('_layouts.master')
+
+@section('body')
+
+@include('_partials.jumbotron', ['main_msg' => 'Handling SMS Messages with PHP through E-mail Piping', 'sub_txt' => 'Posted on September 5, 2010 at 10:25 pm'])
+
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>I have been throwing around a few ideas lately to automate certain tasks via my cell phone. Let&#8217;s say that I&#8217;m in need of some information stored in a database on my webserver, or maybe I just want to upload a photo to my website from my cell phone&#8230; what kind of tools do I have to make this happen?<br />
+<span id="more-97"></span></p>
+<p>After a few days of thinking about the process I have came up with a nifty little method involving a PHP shell script which can be used to pipe e-mail commands.</p>
+<p>Here is the PHP script:</p>
+
+
+<pre><code class="php">
+#!/usr/bin/php -q
+&lt;?php
+// read from stdin
+
+$fd = fopen(&quot;php://stdin&quot;, &quot;r&quot;);
+
+$email = &quot;&quot;;
+
+while (!feof($fd)) {
+
+$email .= fread($fd, 1024);
+
+}
+
+fclose($fd);
+
+// handle email
+
+$lines = explode(&quot;\n&quot;, $email);
+
+// empty vars
+
+$from = &quot;&quot;;
+
+$subject = &quot;&quot;;
+
+$headers = &quot;&quot;;
+
+$message = &quot;&quot;;
+
+$splittingheaders = true;
+
+for ($i=0; $i &amp;lt; count($lines); $i++) {
+
+if ($splittingheaders) {
+
+// this is a header
+
+$headers .= $lines[$i].&quot;\n&quot;;
+
+// look out for special headers
+
+if (preg_match(&quot;/^Subject: (.*)/&quot;, $lines[$i], $matches)) {
+
+$subject = $matches[1];
+
+}
+
+if (preg_match(&quot;/^From: (.*)/&quot;, $lines[$i], $matches)) {
+
+$from = $matches[1];
+
+}
+
+} else {
+
+// not a header, but message
+
+$message .= $lines[$i].&quot;\n&quot;;
+
+}
+
+if (trim($lines[$i])==&quot;&quot;) {
+
+// empty line, header section has ended
+
+$splittingheaders = false;
+
+}
+
+}
+
+$from = addslashes($from);
+
+$subject = addslashes($subject);
+
+$message = addslashes($message);
+
+$carrierEmail = $from;
+
+$triggerName = trim($message);
+
+return 0;
+
+?&gt;
+</code></pre>
+
+
+<p>So as you can see that PHP file is grabbing values from an email message. Specially we are interested in the message body or what I like to call the trigger word (command). This is what will be used to write more PHP code to handle just about any task you could imagine.</p>
+<p>So here is how it works:</p>
+<ul>
+<li>Setup a new email forwarder on your server or at your hosting provider. My host happens to be running Cpanel which makes this really simple.</li>
+<li>Tell the forwarder to take mail from some <a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="cbaaa8a8a4bea5bf8bb2a4beb9afa4a6aaa2a5e5a8a4a6">[email&nbsp;protected]</a><script type="text/javascript">
+/* <![CDATA[ */
+(function(){try{var s,a,i,j,r,c,l,b=document.getElementsByTagName("script");l=b[b.length-1].previousSibling;a=l.getAttribute('data-cfemail');if(a){s='';r=parseInt(a.substr(0,2),16);for(j=2;a.length-j;j+=2){c=parseInt(a.substr(j,2),16)^r;s+=String.fromCharCode(c);}s=document.createTextNode(s);l.parentNode.replaceChild(s,l);}}catch(e){}})();
+/* ]]> */
+</script> and forward it to this</li>
+<li>| php -q /home/user/mailparser.php</li>
+</ul>
+<p>Think it of like having your cell phone send an email to your email address with the words &#8220;last10&#8243; and it automatically sent you back a list of the last 10 website you went to. You could program a list of commands in a database and have users sign up to manage these commands and build a whole scripting langauge behind automating task whether is be web based or by client installed desktop software. You could even program something with this to interface with a desktop application that turned on and off appliances in your house remotely.</p>
+	    </div>
+	    <footer>
+	      	      <ul class="entry-tags"><li><a href="/tag/php/" rel="tag">PHP</a></li><li><a href="/tag/sms/" rel="tag">sms</a></li></ul>	    </footer>
+	    
+<div id="disqus_thread">
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/handling-sms-messages-with-php-through-e-mail-piping/';
+var disqus_identifier = '97 http://www.tegdesign.com/?p=97';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Handling SMS Messages with PHP through E-mail Piping";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=97';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+@endsection

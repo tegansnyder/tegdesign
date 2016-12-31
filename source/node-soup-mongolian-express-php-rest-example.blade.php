@@ -1,0 +1,244 @@
+<!--
+{{ $page_title = 'Node Soup = Mongolian, Express, PHP, Rest Example' }}
+{{ $page_body_class = 'page-blog-post' }}
+-->
+
+@extends('_layouts.master')
+
+@section('body')
+
+@include('_partials.jumbotron', ['main_msg' => 'Node Soup = Mongolian, Express, PHP, Rest Example', 'sub_txt' => 'Posted on April 21, 2012 at 7:32 pm'])
+
+
+
+<div class="container">
+
+<div class="row">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 post-content">
+
+
+<p>Just posted a little example of a node.js, mongolian deadbeef, express, and php working together on my <a href="https://github.com/tegansnyder/Node-Mongolian-Express-PHP-Rest-Example">Github</a>.</p>
+<p><strong>Here is my app.js</strong></p>
+
+
+<pre><code class="javascript">
+&lt;pre&gt;var express = require('express')
+  , http = require('http')
+  , Mongolian = require(&quot;mongolian&quot;)
+  , ObjectId = require('mongolian').ObjectId
+  , Timestamp = require('mongolian').Timestamp;
+
+var app = express();
+var server = new Mongolian;
+var db = server.db(&quot;nodetest&quot;);
+
+app.configure(function(){
+  app.use(express.logger('dev'));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+});
+
+app.configure('development', function(){
+  app.use(express.errorHandler());
+});
+
+app.post('/address', function(req, res){
+
+	var locations = db.collection(&quot;locations&quot;);
+
+	locations.insert({
+		address: req.body.address,
+		city: req.body.city,
+		state: req.body.state
+	});
+
+	res.end();
+
+});
+
+app.get('/address/:id', function(req, res){
+
+	var locations = db.collection(&quot;locations&quot;);
+
+	locations.findOne({ _id: new ObjectId(req.params.id) }, function(err, post) {
+
+		post._id = post._id.toString();
+
+		res.send(JSON.stringify(post));
+
+	});
+
+});
+
+app.get('/addresses', function(req, res){
+
+	var locations = db.collection(&quot;locations&quot;);
+
+	locations.find().toArray(function (err, data) {
+
+		var output = [];
+
+		for(var i=0;i&lt;data.length;i++){
+
+			data[i]._id = data[i]._id.toString();
+
+			output.push(data[i]);
+		}
+
+		res.send(JSON.stringify(output));
+
+	});
+
+});
+
+http.createServer(app).listen(3000);
+
+console.log(&quot;Express server listening on port 3000&quot;);&lt;/pre&gt;
+</code></pre>
+
+
+<p>Here is the php test file:</p>
+
+
+<pre><code class="php">
+&lt;?php
+
+$method = $_SERVER['REQUEST_METHOD'];
+$request = explode(&quot;/&quot;, substr(@$_SERVER['PATH_INFO'], 1));
+
+switch ($method) {
+	case 'POST':
+		rest_post($request, $_POST);
+	break;
+	case 'GET':
+		rest_get($request);
+	break;
+}
+
+
+function rest_get($request) {
+
+	$request = implode(&quot;/&quot;, $request);
+
+	echo file_get_contents('http://localhost:3000/' . $request);
+
+}
+
+function rest_post($request, $_POST) {
+
+	$params = $_POST;
+	unset($params['submit']);
+
+	$request = implode(&quot;/&quot;, $request);
+
+	$curl_handle = curl_init();
+	curl_setopt($curl_handle, CURLOPT_URL, &quot;http://localhost:3000/&quot; . $request);
+	curl_setopt($curl_handle, CURLOPT_CONNECTTIMEOUT, 50);
+	//curl_setopt($curl_handle, CURLOPT_USERPWD, &quot;username:password&quot;);
+	curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($curl_handle, CURLOPT_POST, 1);
+	curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $params);
+
+	$buffer = curl_exec($curl_handle);
+	$error = curl_error($curl_handle);
+	curl_close($curl_handle);
+
+}
+?&gt;
+
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+&lt;title&gt;mongodb node.js mongolian expressjs&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;h1&gt;List All Address&lt;/h1&gt;
+
+&lt;p&gt;Try visting test.php/addresses&lt;/p&gt;
+
+
+&lt;h1&gt;Add a address&lt;/h1&gt;
+
+&lt;form id=&quot;form1&quot; name=&quot;form1&quot; method=&quot;post&quot; action=&quot;test.php/address&quot;&gt;
+  &lt;p&gt;
+    &lt;label for=&quot;address&quot;&gt;address&lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;address&quot; id=&quot;address&quot; /&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for=&quot;city&quot;&gt;city&lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;city&quot; id=&quot;city&quot; /&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;label for=&quot;state&quot;&gt;state&lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;state&quot; id=&quot;state&quot; /&gt;
+  &lt;/p&gt;
+  &lt;p&gt;
+    &lt;input type=&quot;submit&quot; name=&quot;submit&quot; id=&quot;submit&quot; value=&quot;Submit&quot; /&gt;
+  &lt;/p&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+
+
+	    
+<div id="disqus_thread">
+    </div>
+
+<script>
+var disqus_url = 'http://www.tegdesign.com/node-soup-mongolian-express-php-rest-example/';
+var disqus_identifier = '227 http://www.tegdesign.com/?p=227';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'tegdesign';
+var disqus_title = "Node Soup = Mongolian, Express, PHP, Rest Example";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=227';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	  
+
+
+</div>
+
+</div>
+
+</div>
+
+@endsection
