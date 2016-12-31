@@ -5971,6 +5971,9 @@ footer {
   font-size: 1.85rem;
   line-height: 3rem; }
 
+.page-about footer p {
+  font-size: 14px; }
+
 .page-about hr {
   border: 1px solid #b1b1b1; }
 

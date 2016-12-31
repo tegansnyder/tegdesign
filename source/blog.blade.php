@@ -18,7 +18,7 @@
 			<article class="even">
 				<h2><a href="/setting-up-my-new-static-site-using-jigsaw">Setting up my new static site using Jigsaw</a></h2>
 				<small><span class="label">Jan 1st, 2017</span></small>
-				<p>elcome to 2017. Each year over the holidays I try to do something new to my neglected website. This year I decided to update the layout and use the static site generator Jigsaw to make it easier to maintain ...</p>
+				<p>Welcome to 2017. Each year over the holidays I try to do something new to my neglected website. This year I decided to update the layout and use the static site generator Jigsaw to make it easier to maintain ...</p>
 			</article>
 
 			<article class="odd">

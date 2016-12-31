@@ -285,8 +285,8 @@ DirectoryIndex index.html index.php
 <script>
 
 var disqus_config = function () {
-this.page.url = 'http://tegdesign.com/compiling-php-7-with-pthreads-support-and-custom-odbc-teradata-on-macos-sierra.blade.';
-this.page.identifier = 'compiling-php-7-with-pthreads-support-and-custom-odbc-teradata-on-macos-sierra.blade.';
+this.page.url = 'http://tegdesign.com/compiling-php-7-with-pthreads-support-and-custom-odbc-teradata-on-macos-sierra';
+this.page.identifier = 'compiling-php-7-with-pthreads-support-and-custom-odbc-teradata-on-macos-sierra';
 };
 
 (function() {
