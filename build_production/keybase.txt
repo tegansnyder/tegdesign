@@ -1,0 +1,75 @@
+==================================================================
+https://keybase.io/tegansnyder
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://www.tegdesign.com
+  * I am tegansnyder (https://keybase.io/tegansnyder) on keybase.
+  * I have a public key with fingerprint 6D1F 93B8 4667 46BB D542  AEDE 6BE5 2621 472A FF08
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "01018f454847d4e674355ffa33228c38a756f130d7aa61194b7c1b4c3399e776a46f0a",
+            "fingerprint": "6d1f93b8466746bbd542aede6be52621472aff08",
+            "host": "keybase.io",
+            "key_id": "6be52621472aff08",
+            "kid": "01018f454847d4e674355ffa33228c38a756f130d7aa61194b7c1b4c3399e776a46f0a",
+            "uid": "e7276403669b3928283f28364882aa19",
+            "username": "tegansnyder"
+        },
+        "service": {
+            "hostname": "www.tegdesign.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1470969885,
+    "expire_in": 157680000,
+    "prev": "5e5f265efb5d241cd8d7dcad65a95bb737b783f7f216da01c937a25c18291cec",
+    "seqno": 7,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.55
+Comment: https://keybase.io/crypto
+
+yMNMAnicrVJ9TFVlHL6IoEA4aN7xUQQcEITBvfd8veecm4pAiEMhSOIuZbudj/fg
+4eK5l3sOF8gUxwJBbFxhIxXSJKTIAGUaq5UDUmRG6aI2FVxoAmVIjEFtxqhzmf3X
+n73bu3fv+3ue5/09z37XAr11/l62qbjozMS/13t9M3i2TGfppiMOIpxdqETMBxEb
+XD1giQAV1WqTBMSMmFATSosESdAEJRAQUAROkqLI4jiG0TxOsxQJRBQ3CRTLAhRl
+CI7iUY7gcZxhIEUBlgCiiUWSEFGSi6DT4ZRkVZMFAioyOEcTQFMEHCeQBMZCAQIO
+khjAUILCWFE00Rpxv13xMLTmOFaBBsmuvWkX62p7/4H/n/suW5WDFEYBwoQDwHA4
+g9EYjYvaBgRNYyyLMh6gAp0yewBqaBUWsbIiVwrQiRxKQrSCS+KhJ1uPmWeg8vJy
+gwbUspaKZANvP6BpOJx21c7bS7TyflV1KGYPXa10rOIhZ32mZOUkWdDy1Bgu6FQk
+u4yYUQ3Jq5JHWkvDxACGpskkBFY4JCe0Sh4ESQHapC3PP9ClSZKQFDFAQpEjBYxA
+eYEWKIFnBUCyDMlxFE5xlGaUEjEUCKwJ5RmcYjGSR2mMQXnIIx5vpbIdMVNam2yR
+Jukxw6plTogcGhosXKvz8tf5+qzxzJnO3y/o3+lrXwrSdaVnB4d0+E6nd07cv9u9
+t+DEnpAL1RkVs/GtU/nGHOl80sOt/HhbQl+oYjlcHF+dkd0cuHsykaj38U4JPan6
+teWM1A6+HLAr4bvSfYcnpqtOLI0ttDY0JIHvHeeaM6K2NSqWdSFxXTVZXLKx+Oe5
+zQW+vfPh7926WZk+HPPThqs/ouGjOQ0DHy3Kz6sDsULiKe8NNa+k6gp1lsKKBwux
+o8N3DCtnnjiu/ybXRZiWI9uiZL/iyFNNlvfdOy6evQgu/FB/6ZqxtMe9nKrPkvZG
+XBa7v8pv9H53IWZrS/eVkDj/PT4Nry4bba5P3/66KuXXrsXwgbTmvs8E98e5yX3b
+d3J/FWS2rrfl7khAbB+MZetP31gAJV5i2uBwnfPbMuvVFJ8rbSlv1d+KP3+0qmmi
+1JX2aK5D+LDPsWUlL4xWIvEHW7KSX982NT7fY5DNX27qHSooRYYWauveMP6+6fK9
+0drtWbM9FSvR0zsnrUa9ZBh9Md8VAb+YGmw7tnKsc9efnN5SF/3SO2Hj+SPx7nsR
+M0/aP5kVx4Xixyer2vflxQbXV7cHqNeLZ9wtY0sbb38e+nTd0adjf4Rl1dxP7Rcv
+db422VjU/1zMkf4jx8/wabfnHiov7NZ3SIHti4G/lDff2FyldxNvKjeb1p4OfmTM
+7bqbvzG9bv7x7LmBoLyZNb0tAXdGZqM6Mv8B4f23VQ==
+=avKx
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/tegansnyder
+
+==================================================================
+
