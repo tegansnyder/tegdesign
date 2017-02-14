@@ -15,6 +15,12 @@
 
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-pad-l">
 
+			<article class="odd">
+				<h2><a href="/converting-a-nested-json-document-to-csv-using-scala-hadoop-and-apache-spark">Converting a nested JSON document to CSV using Scala, Hadoop, and Apache Spark</a></h2>
+				<small><span class="label">Feb 13, 2017</span></small>
+				<p>Usually when I want to convert a JSON file to a CSV I will write a simple script in PHP. Lately I've been playing more with Apache Spark and wanted to try converting a 600MB JSON file to a CSV using a 3 node cluster I have setup ...</p>
+			</article>
+
 			<article class="even">
 				<h2><a href="/setting-up-my-new-static-site-using-jigsaw">Setting up my new static site using Jigsaw</a></h2>
 				<small><span class="label">Jan 1st, 2017</span></small>
